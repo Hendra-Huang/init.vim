@@ -2,17 +2,19 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'pbogut/deoplete-padawan', { 'for': ['php', 'html.twig'] }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
-Plug 'Shougo/neosnippet-snippets'
+"Plug 'pbogut/deoplete-padawan', { 'for': ['php', 'html.twig'] }
+"Plug 'arnaud-lb/vim-php-namespace', { 'for': ['php'] }
+"Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
 Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'Yggdroot/indentLine'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'gregsexton/MatchTag', { 'for': ['html', 'html.twig', 'javascript', 'javascript.jsx'] }
+Plug 'gregsexton/MatchTag', { 'for': ['html'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 "Plug 'morhetz/gruvbox'
 Plug 'neomake/neomake'
 Plug 'jaawerth/neomake-local-eslint-first', { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'raimondi/delimitmate'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -22,10 +24,10 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'flazz/vim-colorschemes'
-Plug 'elzr/vim-json'
 "Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
 Plug 'beyondwords/vim-twig', { 'for': 'html.twig' }
 Plug 'kassio/neoterm'
+Plug 'alvan/vim-closetag'
 call plug#end()
 
 
@@ -83,21 +85,21 @@ endif
 
 "--Deoplete--"
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources = {}
-let g:deoplete#sources['php'] = ['file', 'buffer', 'tag', 'member', 'padawan']
-let g:deoplete#sources['html.twig'] = ['file', 'buffer', 'tag', 'member', 'padawan']
-let g:deoplete#sources['javascript'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
-let g:deoplete#sources['javascript.jsx'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
+"let g:deoplete#sources = {}
+"let g:deoplete#sources['php'] = ['file', 'buffer', 'tag', 'member', 'padawan']
+"let g:deoplete#sources['html.twig'] = ['file', 'buffer', 'tag', 'member', 'padawan']
+"let g:deoplete#sources['javascript'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
+"let g:deoplete#sources['javascript.jsx'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 "--DeopletePadawan--"
-command! StartPadawan call deoplete#sources#padawan#StartServer()
-command! StopPadawan call deoplete#sources#padawan#StopServer()
-command! RestartPadawan call deoplete#sources#padawan#RestartServer()
+"command! StartPadawan call deoplete#sources#padawan#StartServer()
+"command! StopPadawan call deoplete#sources#padawan#StopServer()
+"command! RestartPadawan call deoplete#sources#padawan#RestartServer()
 
 "--DeopleteTernJS--"
-let g:tern_request_timeout = 1
-let g:tern_show_signature_in_pum = '0'
+"let g:tern_request_timeout = 1
+"let g:tern_show_signature_in_pum = '0'
 
 "--PHP-CS-Fixer--"
 let g:php_cs_fixer_level = "symfony" "which level ?
@@ -125,11 +127,28 @@ let g:neomake_php_enabled_makers = ['php']
 let g:neomake_verbose = 1
 autocmd! BufWritePost * Neomake
 
+"--Vim-Flow--"
+let g:flow#autoclose = '1'
+
+"--vim-php-namespace--"
+"set tags+=.tags,.tags.vendors
+"function! IPhpInsertUse()
+    "call PhpInsertUse()
+    "call feedkeys('a',  'n')
+"endfunction
+"autocmd FileType php inoremap <Leader>u <Esc>:call IPhpInsertUse()<CR>
+"autocmd FileType php noremap <Leader>u :call PhpInsertUse()<CR>
+
+"--vim-autotag--"
+"let g:autotagTagsFile=".tags"
+
+"--vim-closetag--"
+let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.twig,*.js"
 
 "-----Vim-Config-----"
 let g:user_emmet_leader_key='<C-a>'
-let g:indentLine_enabled = 1
-let g:indentLine_color_term = 131
+let g:indentLine_enabled = 2
+let g:indentLine_color_term = 132
 autocmd QuickFixCmdPost *grep* cwindow
 
 set et
@@ -149,6 +168,7 @@ set completeopt=longest,menuone,preview
 set showcmd
 set showmode
 set backspace=indent,eol,start
+let mapleader=','
 
 syntax on
 
