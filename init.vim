@@ -9,7 +9,7 @@ Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Yggdroot/indentLine'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'gregsexton/MatchTag', { 'for': ['html'] }
+Plug 'gregsexton/MatchTag', { 'for': ['html', 'htwml.twig'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 "Plug 'morhetz/gruvbox'
 Plug 'neomake/neomake'
@@ -149,6 +149,7 @@ let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.twig,*.js"
 let g:user_emmet_leader_key='<C-a>'
 let g:indentLine_enabled = 2
 let g:indentLine_color_term = 132
+let g:indentLine_faster = 1
 autocmd QuickFixCmdPost *grep* cwindow
 
 set et
