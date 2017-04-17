@@ -145,6 +145,15 @@ let g:flow#autoclose = '1'
 "--vim-closetag--"
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.twig,*.js"
 
+"--vim-neoterm--"
+tnoremap <Esc> <C-\><C-n>
+" hide/close terminal
+nnoremap <silent> ,th :call neoterm#close()<cr>
+" clear terminal
+nnoremap <silent> ,tl :call neoterm#clear()<cr>
+" kills the current job (send a <c-c>)
+nnoremap <silent> ,tc :call neoterm#kill()<cr>
+
 "-----Vim-Config-----"
 let g:user_emmet_leader_key='<C-a>'
 let g:indentLine_enabled = 2
