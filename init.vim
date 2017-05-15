@@ -11,7 +11,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'gregsexton/MatchTag', { 'for': ['html', 'htwml.twig'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-"Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'neomake/neomake'
 Plug 'jaawerth/neomake-local-eslint-first', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
@@ -28,17 +28,18 @@ Plug 'flazz/vim-colorschemes'
 Plug 'beyondwords/vim-twig', { 'for': 'html.twig' }
 Plug 'kassio/neoterm'
 Plug 'alvan/vim-closetag'
+Plug 'fatih/vim-go', { 'for': 'go' }
 call plug#end()
 
 
 "-----Theme-----"
-"set termguicolors
+set termguicolors
 "colorscheme busierbee
-colorscheme wombat256
-"colorscheme gruvbox
-"let g:gruvbox_italic=1
-"set background=dark
-"let g:gruvbox_contrast_dark = 'hard'
+"colorscheme wombat256
+colorscheme gruvbox
+let g:gruvbox_italic=1
+set background=dark
+"let g:gruvbox_contrast_dark = 'soft'
 
 
 "-----Plugins-Config-----"
@@ -46,7 +47,8 @@ colorscheme wombat256
 "--Vim-Airline--"
 let g:airline#extensions#tabline#enabled = 0 "buffer indicator
 let g:airline_powerline_fonts = 1 "powerline font for airline
-let g:airline_theme='wombat'
+let g:airline_theme='gruvbox'
+"let g:airline_theme='wombat'
 
 "--NerdTree--"
 map <C-n> : NERDTreeToggle<CR>
@@ -129,6 +131,10 @@ autocmd! BufWritePost * Neomake
 
 "--Vim-Flow--"
 let g:flow#autoclose = '1'
+
+"--Vim-Go--"
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
 
 "--vim-php-namespace--"
 "set tags+=.tags,.tags.vendors
