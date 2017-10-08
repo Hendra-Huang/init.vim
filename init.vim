@@ -1,7 +1,7 @@
 "-----Plugins-----"
 call plug#begin('~/.vim/plugged')
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'pbogut/deoplete-padawan', { 'for': ['php', 'html.twig'] }
 "Plug 'arnaud-lb/vim-php-namespace', { 'for': ['php'] }
 "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'javascript.jsx'] }
@@ -12,8 +12,8 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'gregsexton/MatchTag', { 'for': ['html', 'htwml.twig'] }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'morhetz/gruvbox'
-Plug 'neomake/neomake'
-Plug 'jaawerth/neomake-local-eslint-first', { 'for': ['javascript', 'javascript.jsx'] }
+"Plug 'neomake/neomake'
+"Plug 'jaawerth/neomake-local-eslint-first', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'raimondi/delimitmate'
 Plug 'scrooloose/nerdcommenter'
@@ -29,6 +29,14 @@ Plug 'beyondwords/vim-twig', { 'for': 'html.twig' }
 Plug 'kassio/neoterm'
 Plug 'alvan/vim-closetag'
 Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'mileszs/ack.vim'
+
+Plug 'w0rp/ale'
+Plug 'roxma/nvim-completion-manager'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs', 'for': 'php' }
+autocmd FileType php LanguageClientStart
+
 call plug#end()
 
 
@@ -85,14 +93,19 @@ if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 
+"--AckVim--"
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep -s'
+endif
+
 "--Deoplete--"
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 "let g:deoplete#sources = {}
 "let g:deoplete#sources['php'] = ['file', 'buffer', 'tag', 'member', 'padawan']
 "let g:deoplete#sources['html.twig'] = ['file', 'buffer', 'tag', 'member', 'padawan']
 "let g:deoplete#sources['javascript'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
 "let g:deoplete#sources['javascript.jsx'] = ['file', 'buffer', 'tag', 'member', 'ternjs']
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+"autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 "--DeopletePadawan--"
 "command! StartPadawan call deoplete#sources#padawan#StartServer()
@@ -103,6 +116,10 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 "let g:tern_request_timeout = 1
 "let g:tern_show_signature_in_pum = '0'
 
+"--NVim-Completion-Manager--"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 "--PHP-CS-Fixer--"
 let g:php_cs_fixer_level = "symfony" "which level ?
 let g:php_cs_fixer_fixers_list = "-psr0" "Disable PSR-0.
@@ -111,23 +128,36 @@ let g:php_cs_fixer_php_path = "php" "Path to PHP
 let g:php_cs_fixer_dry_run = 0 "Call command with dry-run option
 let g:php_cs_fixer_verbose = 0 "Return the output of command if 1, else an inline information.
 
+"--VimGo--"
+let g:go_auto_type_info = 1
+let g:go_addtags_transform = "snakecase"
+let g:go_auto_sameids = 1
+let g:go_fmt_command = "goimports"
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
 "--VimJSX--"
 "let g:jsx_ext_required = 0
 
 "--NeoMake--"
-let g:neomake_warning_sign = {
-\ 'text': 'W',
-\ 'texthl': 'WarningMsg',
-\ }
-let g:neomake_error_sign = {
-\ 'text': 'E',
-\ 'texthl': 'ErrorMsg',
-\ }
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_jsx_enabled_makers = ['eslint']
-let g:neomake_php_enabled_makers = ['php']
-let g:neomake_verbose = 1
-autocmd! BufWritePost * Neomake
+"let g:neomake_warning_sign = {
+"\ 'text': 'W',
+"\ 'texthl': 'WarningMsg',
+"\ }
+"let g:neomake_error_sign = {
+"\ 'text': 'E',
+"\ 'texthl': 'ErrorMsg',
+"\ }
+"let g:neomake_javascript_enabled_makers = ['eslint']
+"let g:neomake_jsx_enabled_makers = ['eslint']
+"let g:neomake_php_enabled_makers = ['php']
+"let g:neomake_verbose = 1
+"autocmd! BufWritePost * Neomake
+
+"--Ale--"
+let g:ale_sign_error = 'E'
+let g:ale_sign_warning = 'W'
+let g:ale_lint_on_text_changed = 'never'
 
 "--Vim-Flow--"
 let g:flow#autoclose = '1'
@@ -239,3 +269,6 @@ autocmd Filetype blade setlocal ts=4 sts=4 sw=4
 autocmd Filetype html.twig setlocal ts=2 sts=2 sw=2
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype scala setlocal ts=4 sts=4 sw=4
+
+"--Command Alias--"
+command Qt tabclose
